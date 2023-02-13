@@ -5,7 +5,6 @@
 package com.noticias.noticiasWeb.controladores;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -13,13 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author SebaaM <sebaamartinez54@gmail.com>
  */
 @Controller
-@RequestMapping("/noticia")
-public class NoticiaControlador {
+@RequestMapping("/")
+public class PortalControlador {
     
-    @GetMapping("/noticia")
-    public String noticia (){
+    @GetMapping("/")
+    public String index (){
         
-        return "noticia.html";
+        return "inicio.html";
     }
-    
 }
