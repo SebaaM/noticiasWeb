@@ -24,13 +24,12 @@ public class NoticiaServicio {
     private NoticiaRepositorio noticiaRepositorio;
 
     @Transactional
-    public void crearNoticia(Long id, String titulo, String cuerpo) throws ValidacionException {
+    public void crearNoticia(String titulo, String cuerpo) throws ValidacionException {
         
-        validar(id, titulo, cuerpo);
+        validar( titulo, cuerpo);
         
         Noticia noticia = new Noticia();
 
-        noticia.setId(id);
         noticia.setTitulo(titulo);
         noticia.setCuerpo(cuerpo);
         noticia.setFecha(new Date());
@@ -48,7 +47,10 @@ public class NoticiaServicio {
 
     public void modificarNoticia(Long id, String titulo, String Cuerpo) throws ValidacionException {
         
-        validar(id, titulo, Cuerpo);
+        validar( titulo, Cuerpo);
+        if (id == null ) {
+            throw new ValidacionException ("El id de la noticia no puede ser nulo");
+        }
         
         Optional<Noticia> respuesta = noticiaRepositorio.findById(id);
         
@@ -63,10 +65,7 @@ public class NoticiaServicio {
 
     }
 
-    private void validar(Long id, String titulo, String cuerpo) throws ValidacionException {
-        if ( id == null) {
-            throw new ValidacionException ("El id de la noticia no puede ser nulo.");
-        } 
+    private void validar( String titulo, String cuerpo) throws ValidacionException {
         if (titulo == null || titulo.isEmpty()){
             throw new ValidacionException ("El titulo de la noticia no puede estar vacio ni ser nulo");
         }
