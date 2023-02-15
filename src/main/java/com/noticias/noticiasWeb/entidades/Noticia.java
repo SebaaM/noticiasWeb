@@ -4,6 +4,7 @@
  */
 package com.noticias.noticiasWeb.entidades;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +18,7 @@ import javax.persistence.TemporalType;
  * @author SebaaM <sebaamartinez54@gmail.com>
  */
 @Entity
-public class Noticia {
+public class Noticia implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

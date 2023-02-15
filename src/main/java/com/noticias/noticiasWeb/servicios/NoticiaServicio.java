@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,9 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author SebaaM <sebaamartinez54@gmail.com>
  */
+
 @Service
 public class NoticiaServicio {
-
+    
+    @Autowired
     private NoticiaRepositorio noticiaRepositorio;
 
     @Transactional
@@ -36,7 +39,8 @@ public class NoticiaServicio {
 
         noticiaRepositorio.save(noticia);
     }
-
+    
+    @Transactional(readOnly = true)
     public List<Noticia> listarNoticias() {
         List<Noticia> noticias = new ArrayList();
 
@@ -44,7 +48,8 @@ public class NoticiaServicio {
 
         return noticias;
     }
-
+    
+    @Transactional
     public void modificarNoticia(Long id, String titulo, String Cuerpo) throws ValidacionException {
         
         validar( titulo, Cuerpo);
@@ -73,5 +78,19 @@ public class NoticiaServicio {
             throw new ValidacionException ("El cuerpo de la noticia no puede estar vacio ni ser nulo");
         }
     }
+    
+    @Transactional(readOnly = true)
+    public Noticia getOne(Long id) {
+        return noticiaRepositorio.getOne(id);
+    }
+    
+    @Transactional
+    public void eliminar (Long id) throws ValidacionException {
+        
+        Noticia noticia = noticiaRepositorio.getReferenceById(id);
+        noticiaRepositorio.delete(noticia);
+    }
+    
 
+    
 }
