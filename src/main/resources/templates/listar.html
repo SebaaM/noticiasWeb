@@ -28,7 +28,9 @@
         -->
         
         <div class="container m-5" >
+            <br>
             <h2>Listado de noticias</h2>
+            <br>
             <table class="table table-bordered table-warning table-striped">
                 <thead>
                     <tr>
@@ -47,6 +49,8 @@
                         <td th:text="${noticia.fecha}"></td>
                         <td>
                             <a th:href= "@{/noticia/modificar/__${noticia.id}__}" class="btn btn-sm btn-primary"> Modificar </a>
+                            <a th:href= "@{/noticia/eliminar/__${noticia.id}__}" class="btn btn-sm btn-danger"> Eliminar </a>
+                         
                         </td>
                     </tr>
 
@@ -71,7 +75,7 @@
             <section class="py-5 text-center container">
                 <div class="row py-lg-5">
                     <div class="col-lg-6 col-md-8 mx-auto">
-                        <a th:href="@{/inicio}" class="btn btn-secondary my-2">Volver</a>
+                        <a th:href="@{/}" class="btn btn-secondary my-2">Volver</a>
                         </p>
                     </div>
                 </div>

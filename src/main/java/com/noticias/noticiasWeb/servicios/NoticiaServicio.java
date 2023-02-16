@@ -86,9 +86,13 @@ public class NoticiaServicio {
     
     @Transactional
     public void eliminar (Long id) throws ValidacionException {
+        if (id == null) {
+            throw new ValidacionException ("Fallo al eliminar el id es nulo. ");
+        }
         
         Noticia noticia = noticiaRepositorio.getReferenceById(id);
-        noticiaRepositorio.delete(noticia);
+        
+        noticiaRepositorio.deleteById(noticia.getId());
     }
     
 

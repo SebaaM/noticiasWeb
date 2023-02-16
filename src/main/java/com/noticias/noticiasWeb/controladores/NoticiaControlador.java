@@ -61,7 +61,7 @@ public class NoticiaControlador {
         return "noticia.html";
     }
     
-    @GetMapping("/lista")
+    @GetMapping("/noticia/lista")
     public String listar (ModelMap modelo) {
         
         List<Noticia> noticias = noticiaServicio.listarNoticias();
@@ -85,11 +85,9 @@ public class NoticiaControlador {
         try {
             
             noticiaServicio.modificarNoticia(id, titulo, cuerpo);
-            
-            ////////////////////////////
-            // ARREGLAR ESTE RETURN PARA VOLVER A LA LISTA.
-            return "/lista";
-            /////////////////////
+            modelo.put("exito", "La noticia fue cargado correctamente!");
+
+            return "redirect:../lista";
         } catch (ValidacionException e) {
             
             modelo.put("error", e.getMessage());
@@ -98,12 +96,48 @@ public class NoticiaControlador {
         }
     }
     
-    @DeleteMapping("{id}")
-    public String eliminar (@PathVariable Long id, ModelMap modelo) throws ValidacionException {
-        noticiaServicio.eliminar(id);
+    
+    @PostMapping("/noticia/eliminar/{id}")
+    public String eliminar (@PathVariable Long id)  {
         
-        return "noticia_modificar.html";
+        try {
+            System.out.println("El id a eliminar: "+id);
+            noticiaServicio.eliminar(id);
+            
+        } catch (ValidacionException e) {
+            
+            System.out.println("ERROR AL ELIMINAR ");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return "redirect:../lista";
+        }
+       
+        return "redirect:../lista";
+       
     }
+    
+    @GetMapping("/noticia/eliminar/{id}")
+    public String delete (@PathVariable Long id, ModelMap model) {
+        
+        model.put ("noticia", noticiaServicio.getOne(id));
+        
+        return "noticia_eliminar.html";
+    
+    }
+    
+    /*
+    @PostMapping("/noticia/eliminar/{id}")
+    public void deletePost (@PathVariable Long id){
+        try {
+            
+            noticiaServicio.eliminar(id);
+        } catch (ValidacionException e) {
+            
+        }
+        
+    }
+    */
+    
     
     
     

@@ -15,7 +15,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         
         <div class="container container-fluid ">
             <h2>Modificar Noticia: </h2>
-            <form class="form-control col-6" th:action="@{/noticia/modificar/__${noticia.id}__}" method="post" >
+            <form class="form-control col-6" th:action="@{/noticia/eliminar/__${noticia.id}__}" method="post" >
                 
                 <input hidden th:value= "${id}" name="id">
 
@@ -32,7 +32,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-warning">Modificar</button>
+                <button type="submit" class="btn btn-danger" >Eliminar</button>
             </form>
         </div>
 
