@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,7 +38,7 @@ public class UsuarioServicio implements UserDetailsService{
 
         user.setNombre(nombre);
         user.setEmail(email);
-        user.setPassword(password);
+        user.setPassword(new BCryptPasswordEncoder().encode(password));
         user.setRol(Rol.USER);
 
         usuarioRepositorio.save(user);
@@ -55,7 +56,7 @@ public class UsuarioServicio implements UserDetailsService{
         if (password == null || password.isEmpty() || password.length() <=5) {
             throw new ValidacionException("La contraseña del Usuario no puede ser nulo o estar vacio y debe tener mas de 5 digitos");
         }
-        if (password2.equals(password)) {
+        if (!password2.equals(password)) {
             throw new ValidacionException("Las contraseñas del Usuario deben ser iguales.");
         }
 

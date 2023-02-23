@@ -7,14 +7,12 @@ package com.noticias.noticiasWeb.controladores;
 import com.noticias.noticiasWeb.entidades.Noticia;
 import com.noticias.noticiasWeb.exepciones.ValidacionException;
 import com.noticias.noticiasWeb.servicios.NoticiaServicio;
+import com.noticias.noticiasWeb.servicios.UsuarioServicio;
 import java.util.List;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +29,9 @@ public class NoticiaControlador {
 
     @Autowired
     private NoticiaServicio noticiaServicio;
+    
+    @Autowired
+    private UsuarioServicio usuarioServicio;
 
     @GetMapping("/noticia")
     public String noticia() {
@@ -124,8 +125,14 @@ public class NoticiaControlador {
      * CONTROLADOR PORTAL
      *
      */
-    @GetMapping("/")
+    
+    @GetMapping("/inicio")
     public String index() {
+
+        return "inicio.html";
+    }
+    @GetMapping("/")
+    public String index2() {
 
         return "inicio.html";
     }
@@ -137,10 +144,37 @@ public class NoticiaControlador {
     }
 
     @GetMapping("/login")
-    public String login() {
-
+    public String login(@RequestParam(required = false)String error, ModelMap model) {
+        
+        if (error != null) {
+            model.put ("error", "Usuario o Contraseña invalidos..");
+            
+        } else{
+            model.put ("exito", "Usuario Loggeado");
+        }
+        
         return "login.html";
     }
+    
+    @PostMapping ("/registroUser")
+    public String registrarUsuario (ModelMap model,@RequestParam String nombre,@RequestParam String email,@RequestParam String password,@RequestParam String password2){
+        
+        try {
+            usuarioServicio.registrar(nombre, email, password, password2);
+            
+            model.put ("exito", "Usuario registrado correctamente!");
+            return "inicio.html";
+        } catch (ValidacionException e) {
+            
+            model.put ("error", e.getMessage());
+            model.put ("nombre",nombre);
+            model.put ("email",email);
+            //Contraseñas no se autorellenan.
+            
+            return "register.html";
+        }
+    }
+    
 
     /**
      *
