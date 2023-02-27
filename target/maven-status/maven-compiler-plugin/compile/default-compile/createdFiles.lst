@@ -1,11 +1,11 @@
+com\noticias\noticiasWeb\servicios\UsuarioServicio.class
+com\noticias\noticiasWeb\repositorios\NoticiaRepositorio.class
+com\noticias\noticiasWeb\Enumeraciones\Rol.class
 com\noticias\noticiasWeb\servicios\NoticiaServicio.class
 com\noticias\noticiasWeb\controladores\NoticiaControlador.class
 com\noticias\noticiasWeb\repositorios\UsuarioRepositorio.class
-com\noticias\noticiasWeb\servicios\UsuarioServicio.class
 com\noticias\noticiasWeb\entidades\Usuario.class
 com\noticias\noticiasWeb\NoticiasWebApplication.class
-com\noticias\noticiasWeb\repositorios\NoticiaRepositorio.class
 com\noticias\noticiasWeb\entidades\Noticia.class
-com\noticias\noticiasWeb\Enumeraciones\Rol.class
 com\noticias\noticiasWeb\SeguridadWeb.class
 com\noticias\noticiasWeb\exepciones\ValidacionException.class

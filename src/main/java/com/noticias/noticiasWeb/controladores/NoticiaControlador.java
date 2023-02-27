@@ -5,12 +5,15 @@
 package com.noticias.noticiasWeb.controladores;
 
 import com.noticias.noticiasWeb.entidades.Noticia;
+import com.noticias.noticiasWeb.entidades.Usuario;
 import com.noticias.noticiasWeb.exepciones.ValidacionException;
 import com.noticias.noticiasWeb.servicios.NoticiaServicio;
 import com.noticias.noticiasWeb.servicios.UsuarioServicio;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,13 +36,13 @@ public class NoticiaControlador {
     @Autowired
     private UsuarioServicio usuarioServicio;
 
-    @GetMapping("/noticia")
+    @GetMapping("/noticia/nueva")
     public String noticia() {
 
-        return "noticia.html";
+        return "noticia_crear.html";
     }
 
-    @PostMapping("/terminado")
+    @PostMapping("/noticia/terminado")
     public String terminado(@RequestParam String titulo, @RequestParam(required = false) String cuerpo, ModelMap model) {
         //System.out.println("En /terminado prueba de parametros:" + titulo +" y cuerpo: "+ cuerpo );
         try {
@@ -52,9 +55,9 @@ public class NoticiaControlador {
             model.put("error", e.getMessage());
             Logger.getLogger(NoticiaControlador.class.getName()).log(Logger.Level.WARN, e);
 
-            return "noticia.html";
+            return "noticia_crear.html";
         }
-        return "noticia.html";
+        return "noticia_crear.html";
     }
 
     @GetMapping("/noticia/lista")
@@ -63,7 +66,7 @@ public class NoticiaControlador {
         List<Noticia> noticias = noticiaServicio.listarNoticias();
         modelo.addAttribute("noticias", noticias);
 
-        return "listar.html";
+        return "noticia_listar.html";
     }
 
     @GetMapping("/noticia/modificar/{id}")
@@ -126,18 +129,26 @@ public class NoticiaControlador {
      *
      */
     
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @GetMapping("/inicio")
-    public String index() {
-
+    public String inicio(HttpSession session) {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            
+            if (logueado.getRol().toString().equals("ADMIN")) {
+                return "redirect:/admin/dashboard";
+            }
         return "inicio.html";
     }
+    
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @GetMapping("/")
     public String index2() {
 
         return "inicio.html";
+    
     }
-
-    @GetMapping("/register")
+  
+    @GetMapping("/registrar")
     public String register() {
 
         return "register.html";
@@ -148,9 +159,6 @@ public class NoticiaControlador {
         
         if (error != null) {
             model.put ("error", "Usuario o Contraseña invalidos..");
-            
-        } else{
-            model.put ("exito", "Usuario Loggeado");
         }
         
         return "login.html";
@@ -175,6 +183,19 @@ public class NoticiaControlador {
         }
     }
     
+    /**
+     * 
+     * CONTROLADOR ADMIN
+     * 
+    */
+    
+    @GetMapping("/admin/dashboard")
+    public String panelAdmin (){
+        
+        return "panelAdmin.html";
+    }
+    
+    
 
     /**
      *
@@ -190,5 +211,7 @@ public class NoticiaControlador {
 
         noticiaServicio.sendEmail(from, to);
     }
+
+    
 
 }

@@ -53,6 +53,10 @@
             <artifactId>lombok</artifactId>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
