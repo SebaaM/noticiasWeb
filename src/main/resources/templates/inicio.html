@@ -19,12 +19,16 @@
                 </div>
             </div>
         </div>
-    <div class="fondo">
+    <div class="">
         <div class="fondo d-flex justify-content-center align-items-center" >
             <div class="text-center " >
-                <br><br>
-                <h3 th:if="${session.usuariosession != null}" th:text="'Hola de vuelta ' + ${session.usuariosession.nombre}"> </h3>
+                
                 <h1 class="">Inicio noticia</h1>
+                <h3 th:if="${session.usuariosession != null}" th:text="'Hola de vuelta ' + ${session.usuariosession.nombre}"> </h3>
+                <img class="img-perfil" sec:authorize="isAuthenticated()" th:src="@{/imagen/perfil/__${session.usuariosession.id}__}" alt="imagen perfil.">
+                
+                <br>
+                <br>
                 <br>
                 <a class="btn btn-secondary btn-sm" href="/logout" >Cerrar Sesion</a>
             </div>

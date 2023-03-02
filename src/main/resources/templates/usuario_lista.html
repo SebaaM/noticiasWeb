@@ -6,13 +6,13 @@
     <body>
         
         <nav th:insert="/fragments/navbar :: nav"> </nav>
-        <div class="fondo" style="background-attachment: fixed">
-            
-            <div class="container m-5 p-2" >
-                <a  th:href="@{/noticia/nueva}" sec:authorize="hasRole('ADMIN')" class="btn btn-success btn-lg col-3">Noticia Nueva</a>
+
+        <div class="fondo " >  
+           
+            <div class="container m-5 p-2 " >
                 <br>
                 <div class="d-inline-flex">
-                    <h2>Listado de noticias:    </h2>             
+                    <h2>Listado de Usuarios:</h2>             
                                      
                 </div>
                 <br>
@@ -20,29 +20,37 @@
                     <thead>
                         <tr>
                             <th scope="col">id</th>
-                            <th scope="col">Titulo</th>
-                            <th scope="col">Cuerpo</th>
-                            <th scope="col">Fecha</th>
-                            
-                            <th scope="col" sec:authorize = "hasRole('ADMIN')">Acciones</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Foto de Perfil</th>
+                            <th scope="col">Rol</th>
+                            <th class="col-2" scope="col" sec:authorize = "hasRole('ADMIN')">Cambiar Rol</th>
+                            <th class="col-2" scope="col" sec:authorize = "hasRole('ADMIN')">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody th:each="noticia : ${noticias}"> 
+                    <tbody th:each="user : ${usuarios}"> 
                         <tr>
-                            <th scope="row" th:text="${noticia.id}"></th>
-                            <td th:text="${noticia.titulo}"></td>
-                            <td th:text="${noticia.cuerpo}"></td>
-                            <td th:text="${noticia.fecha}"></td>
-                            
+                            <th scope="row" th:text="${user.id}"></th>
+                            <td th:text="${user.nombre}"></td>
+                            <td >
+                                <a>
+                                    <img th:if="${user.imagen != null}" class="img-perfil" th:src="@{/imagen/perfil/__${user.id}__}" alt="imagen perfil.">
+                                </a>
+                            </td>
+                            <td th:text="${user.rol}"></td>
+                            <td > 
+                                
+                                <a sec:authorize = "hasRole('ADMIN')" th:href= "@{/modificarRol/__${user.id}__}" class="btn btn-sm btn-success"> Cambiar Rol </a>
+                            </td>
                             <td>
-                                <a  sec:authorize = "hasRole('ADMIN')" th:href= "@{/noticia/modificar/__${noticia.id}__}" class="btn btn-sm btn-primary"> Modificar </a>
-                                <a sec:authorize = "hasRole('ADMIN')" th:href= "@{/noticia/eliminar/__${noticia.id}__}" class="btn btn-sm btn-danger"> Eliminar </a>
+                                <a sec:authorize = "hasRole('ADMIN')" th:href= "@{/usuario/modificar/__${user.id}__}" class="btn btn-sm btn-primary"> Modificar </a>
+                                <a sec:authorize = "hasRole('ADMIN')" th:href= "@{/usuario/eliminar/__${user.id}__}" class="btn btn-sm btn-danger"> Eliminar </a>
                             
                             </td>
                         </tr>
 
                     </tbody>
                 </table>
+
                 <!-- Fin de Tabla -->
                 
                 <div th:if="${exito}!=null" class="card text-white bg-success mb-3 mt-3 mensajeExito" >

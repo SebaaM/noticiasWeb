@@ -13,14 +13,20 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -32,7 +38,7 @@ public class NoticiaControlador {
 
     @Autowired
     private NoticiaServicio noticiaServicio;
-    
+
     @Autowired
     private UsuarioServicio usuarioServicio;
 
@@ -128,26 +134,25 @@ public class NoticiaControlador {
      * CONTROLADOR PORTAL
      *
      */
-    
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @GetMapping("/inicio")
     public String inicio(HttpSession session) {
-            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            
-            if (logueado.getRol().toString().equals("ADMIN")) {
-                return "redirect:/admin/dashboard";
-            }
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+
+        if (logueado.getRol().toString().equals("ADMIN")) {
+            return "redirect:/admin/dashboard";
+        }
         return "inicio.html";
     }
+
+   
     
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @GetMapping("/")
-    public String index2() {
+    public String index(HttpSession session) {
 
         return "inicio.html";
-    
     }
-  
+
     @GetMapping("/registrar")
     public String register() {
 
@@ -155,63 +160,135 @@ public class NoticiaControlador {
     }
 
     @GetMapping("/login")
-    public String login(@RequestParam(required = false)String error, ModelMap model) {
-        
+    public String login(@RequestParam(required = false) String error, ModelMap model) {
+
         if (error != null) {
-            model.put ("error", "Usuario o Contraseña invalidos..");
+            model.put("error", "Usuario o Contraseña invalidos..");
         }
-        
+
         return "login.html";
     }
-    
-    @PostMapping ("/registroUser")
-    public String registrarUsuario (ModelMap model,@RequestParam String nombre,@RequestParam String email,@RequestParam String password,@RequestParam String password2){
-        
+
+    @PostMapping("/registroUser")
+    public String registrarUsuario(ModelMap model, @RequestParam String nombre, @RequestParam String email, @RequestParam String password, @RequestParam String password2, MultipartFile archivo) {
+
         try {
-            usuarioServicio.registrar(nombre, email, password, password2);
-            
-            model.put ("exito", "Usuario registrado correctamente!");
+            usuarioServicio.registrar(archivo, nombre, email, password, password2);
+
+            model.put("exito", "Usuario registrado correctamente!");
             return "inicio.html";
         } catch (ValidacionException e) {
-            
-            model.put ("error", e.getMessage());
-            model.put ("nombre",nombre);
-            model.put ("email",email);
+
+            model.put("error", e.getMessage());
+            model.put("nombre", nombre);
+            model.put("email", email);
             //Contraseñas no se autorellenan.
-            
+
             return "register.html";
         }
     }
-    
-    /**
-     * 
-     * CONTROLADOR ADMIN
-     * 
-    */
-    
-    @GetMapping("/admin/dashboard")
-    public String panelAdmin (){
+
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @GetMapping("/perfil")
+    public String perfil(ModelMap model, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuariosession");
+        model.put("usuario", usuario);
         
+        return "usuario_modificar.html";
+
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PostMapping("/perfil/{id}")
+    public String actualizarUsuario(ModelMap model,@PathVariable String id, @RequestParam String nombre, @RequestParam String email, @RequestParam String password, @RequestParam String password2, MultipartFile archivo) {
+
+        try {
+            usuarioServicio.modificar(archivo, id, nombre, email, password, password2);
+
+            model.put("exito", "Usuario registrado correctamente!");
+            return "inicio.html";
+        } catch (ValidacionException e) {
+
+            model.put("error", e.getMessage());
+            model.put("nombre", nombre);
+            model.put("email", email);
+            //Contraseñas no se autorellenan.
+
+            return "usuario_modificar.html";
+        }
+    }
+    
+
+    
+    
+
+    /**
+     *
+     * CONTROLADOR ADMIN
+     *
+     */
+    @GetMapping("/admin/dashboard")
+    public String panelAdmin() {
+
         return "panelAdmin.html";
     }
     
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping("/perfil/lista")
+    public String listaUsuarios(ModelMap modelo) {
+
+        List<Usuario> usuarios = usuarioServicio.listarNoticias();
+        modelo.addAttribute("usuarios", usuarios);
+
+        return "usuario_lista.html";
+    }
     
+    @GetMapping("/modificarRol/{id}")
+    public String cambiarRol (@PathVariable String id){
+        usuarioServicio.cambiarRol(id);
+        
+        return "redirect:/perfil/lista";
+    }
+    
+    
+    
+    @DeleteMapping
+    public void borrarUsuario (){
+        
+    }
+    
+    
+
+    /**
+     *
+     * CONTROLADOR IMAGENES
+     *
+     */
+    @GetMapping("/imagen/perfil/{id}")
+    public ResponseEntity<byte[]> imagenUsuario(@PathVariable String id) {
+        Usuario usuario = usuarioServicio.getOne(id);
+
+        byte[] imagen = usuario.getImagen().getContenido();
+
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.setContentType(MediaType.IMAGE_JPEG);
+
+        return new ResponseEntity<>(imagen, headers, HttpStatus.OK);
+
+    }
 
     /**
      *
      * MAIL SENDER
      *
      */
-    
     // String from = "sender@gmail.com";//dirección de correo que hace el envío.
     // String to = "recipient@gmail.com";//dirección de correo que recibe el mail.
-    
-    @PostMapping ("/enviarEmail")
+    @PostMapping("/enviarEmail")
     public void sendEmail(String from, String to) {
 
         noticiaServicio.sendEmail(from, to);
     }
-
-    
 
 }

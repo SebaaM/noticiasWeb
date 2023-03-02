@@ -4,50 +4,35 @@
  */
 package com.noticias.noticiasWeb.entidades;
 
-import com.noticias.noticiasWeb.Enumeraciones.Rol;
-import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import javax.persistence.Lob;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
  *
  * @author SebaaM <sebaamartinez54@gmail.com>
  */
-@Getter
-@Setter
-@ToString
+
 @Data
-@NoArgsConstructor (access = AccessLevel.PUBLIC)
-@AllArgsConstructor 
 @Entity
-public class Usuario implements Serializable {
-    
+public class Imagen {
     @Id
     @GeneratedValue (generator = "uuid")
     @GenericGenerator (name = "uuid", strategy = "uuid2")
     private String id;
     
+    private String mime;
     private String nombre;
-    private String email;
-    private String password;
     
-    @Enumerated(EnumType.STRING)
-    private Rol rol;
+    @Lob @Basic(fetch = FetchType.LAZY)
+    private byte[] contenido;
     
-    @OneToOne
-    private Imagen imagen;
-
+    
+    
     
 }

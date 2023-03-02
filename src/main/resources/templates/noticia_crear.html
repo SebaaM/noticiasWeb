@@ -10,9 +10,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <nav th:insert="/fragments/navbar :: nav"> </nav>
 
         <div class="fondo"> 
-            <div class="container container-fluid">
-                <h2>Noticia Nueva</h2>
-                <form action="/noticia/terminado" method="post" class="col-6">
+            <div class="container d-flex justify-content-center  my-1  ">
+                <br>
+                <form action="/noticia/terminado" method="post" class="col-6 py-3">
+                    <h2 class="">Noticia Nueva</h2>
                     <div class="form-group my-4">
                         <label for="titulo">Titulo:</label>
                         <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Ingrese el titulo de la noticia">

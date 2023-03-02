@@ -9,10 +9,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
         <nav th:insert="/fragments/navbar :: nav"> </nav>
         <div class="fondo">
-        <div class="container container-fluid ">
-            <h2>Modificar Noticia: </h2>
+            <div class="container d-flex justify-content-center  my-1  ">
+            
             <form class="form-control col-6" th:action="@{/noticia/modificar/__${noticia.id}__}" method="post" >
-                
+                <h2>Modificar Noticia: </h2>
                 <input hidden th:value= "${id}" name="id">
 
                 <div class="form-group my-3">
