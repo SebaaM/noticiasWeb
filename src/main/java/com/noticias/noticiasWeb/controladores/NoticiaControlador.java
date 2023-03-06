@@ -227,6 +227,7 @@ public class NoticiaControlador {
      * CONTROLADOR ADMIN
      *
      */
+    
     @GetMapping("/admin/dashboard")
     public String panelAdmin() {
 
@@ -283,6 +284,7 @@ public class NoticiaControlador {
      * MAIL SENDER
      *
      */
+    
     // String from = "sender@gmail.com";//dirección de correo que hace el envío.
     // String to = "recipient@gmail.com";//dirección de correo que recibe el mail.
     @PostMapping("/enviarEmail")
