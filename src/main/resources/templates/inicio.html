@@ -25,12 +25,12 @@
                 
                 <h1 class="">Inicio noticia</h1>
                 <h3 th:if="${session.usuariosession != null}" th:text="'Hola de vuelta ' + ${session.usuariosession.nombre}"> </h3>
-                <img class="img-perfil" sec:authorize="isAuthenticated()" th:src="@{/imagen/perfil/__${session.usuariosession.id}__}" alt="imagen perfil.">
+                <img class="img-perfil" sec:authorize="isAuthenticated()" th:if="${session.usuariosession.imagen != null}" th:src="@{/imagen/perfil/__${session.usuariosession.id}__}" alt="imagen perfil.">
                 
                 <br>
                 <br>
                 <br>
-                <a class="btn btn-secondary btn-sm" href="/logout" >Cerrar Sesion</a>
+                <a class="btn btn-secondary btn-sm" sec:authorize="isAuthenticated()" href="/logout" >Cerrar Sesion</a>
             </div>
             
 

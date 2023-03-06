@@ -10,6 +10,17 @@
     </button>
     <div class="collapse navbar-collapse elementosNav " id="navbarNavDropdown">
         <ul class="navbar-nav ms-auto elementos">
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" th:if="${session.usuariosession != null }" sec:authorize="hasRole('ADMIN')" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Administrar Usuarios
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    
+                    <li><a class="dropdown-item" sec:authorize="hasRole('ADMIN')" th:href="@{/perfil/lista}">Lista de Usuarios</a></li>
+                </ul>
+            </li>
+
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" th:if="${session.usuariosession != null }" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Noticias
@@ -38,16 +49,19 @@
                 </ul>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" th:if="${session.usuariosession == null}"  th:href="@{/registrar}" id="navbarDropdown"  >
-                    Registrate
-                </a>
-            </li>
+
             <li class="nav-item">
                 <a class="nav-link " th:if="${session.usuariosession == null }" th:href="@{/login}" id="navbarDropdown" r>
                     Ingresar 
                 </a>
             </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" th:if="${session.usuariosession == null}"  th:href="@{/registrar}" id="navbarDropdown"  >
+                    Registrate
+                </a>
+            </li>
+
 
         </ul>
     </div>
