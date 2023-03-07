@@ -10,5 +10,6 @@ package com.noticias.noticiasWeb.Enumeraciones;
  */
 public enum Rol {
     USER,
-    ADMIN;
+    ADMIN,
+    PERIODISTA;
 }

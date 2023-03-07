@@ -134,7 +134,7 @@ public class NoticiaControlador {
      * CONTROLADOR PORTAL
      *
      */
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_PERIODISTA')")
     @GetMapping("/inicio")
     public String inicio(HttpSession session) {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
@@ -188,7 +188,7 @@ public class NoticiaControlador {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_PERIODISTA')")
     @GetMapping("/perfil")
     public String perfil(ModelMap model, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuariosession");
@@ -198,7 +198,7 @@ public class NoticiaControlador {
 
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_PERIODISTA')")
     @PostMapping("/perfil/{id}")
     public String actualizarUsuario(ModelMap model,@PathVariable String id, @RequestParam String nombre, @RequestParam String email, @RequestParam String password, @RequestParam String password2, MultipartFile archivo) {
 

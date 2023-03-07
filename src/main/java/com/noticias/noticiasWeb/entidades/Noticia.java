@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.AccessLevel;
@@ -39,6 +40,9 @@ public class Noticia implements Serializable {
     private Long id;
     private String titulo;
     private String cuerpo;
+    
+    @OneToOne
+    private Periodista creador;
     
     @Temporal(TemporalType.DATE)
     private Date fecha;

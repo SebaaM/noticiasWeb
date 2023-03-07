@@ -6,6 +6,7 @@ package com.noticias.noticiasWeb.entidades;
 
 import com.noticias.noticiasWeb.Enumeraciones.Rol;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -20,7 +21,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
-
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 /**
  *
  * @author SebaaM <sebaamartinez54@gmail.com>
@@ -42,6 +44,10 @@ public class Usuario implements Serializable {
     private String nombre;
     private String email;
     private String password;
+    private  Boolean activo;
+    
+    @Temporal(TemporalType.DATE)
+    private Date fecha_alta;
     
     @Enumerated(EnumType.STRING)
     private Rol rol;

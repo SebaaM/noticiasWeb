@@ -4,6 +4,8 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>com.noticias.noticiasWeb.entidades.Noticia</class>
     <class>com.noticias.noticiasWeb.entidades.Usuario</class>
+    <class>com.noticias.noticiasWeb.entidades.Periodista</class>
+    <class>com.noticias.noticiasWeb.entidades.Administrador</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/noticias?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
